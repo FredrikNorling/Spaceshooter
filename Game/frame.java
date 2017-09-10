@@ -9,7 +9,7 @@ public class frame {
     public frame() {
         JFrame f = new JFrame("TicTacToe");
         Window w = new Window();
-        f.setBounds(150,0,1080,720);
+        f.setBounds(150,0,1096,759);
         f.add(w);
         f.addKeyListener(w);
         f.setVisible(true);

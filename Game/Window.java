@@ -1,53 +1,58 @@
 package Game;
+import Game.drawAble.Asteroid;
+import Game.drawAble.Bullets;
+import Game.drawAble.Ship;
+import Game.drawAble.drawAble;
+import Game.map.Adjuster;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 import javax.swing.*;
 
 
-public class Window extends JPanel implements KeyListesner, ActionListener{
+public class Window extends JPanel implements KeyListener, ActionListener{
     int x =0;
     boolean[] key = new boolean[4];
-    Ship s = new Ship(260,260);
+    Ship ship = new Ship(260,260);
     ArrayList<rect> al = new ArrayList<rect>();
     ArrayList<Asteroid> ast = new ArrayList<Asteroid>();
+    Adjuster adjuster;
     public Window(){
         repaint();
         Timer t = new Timer(5,this);
         t.start();
+        adjuster = new Adjuster(ship);
+        adjuster.addWorld(ship);
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawPolygon(s.getShip());
-        for(Bullets b : s.getList()){
-            g.fillOval(b.getX(),b.getY(),10,10);
-        }
-        for(Asteroid at : ast){
+        g.drawString("x:"+(int)ship.x+"     y:"+(int)ship.y,0,29);
+        g.drawString("WindowX:"+adjuster.windowX+"     WindowY:"+adjuster.windowY,0,50);
 
+        for(drawAble b : adjuster.getMap()){
+            b.draw(g);
         }
 
     }
     @Override
     public void keyTyped(KeyEvent e) {
         if(e.getKeyChar()=='a'){
-            s.angleIncrement(Math.toRadians(-1));
+            ship.angleIncrement(Math.toRadians(-1));
         }
         if(e.getKeyChar()=='d'){
-            s.angleIncrement(Math.toRadians(1));
+            ship.angleIncrement(Math.toRadians(1));
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode()==32){
-            s.shoot();
-            System.out.println(s.getList().size());
+            ship.shoot();
         }
         if(e.getKeyChar()=='w'){
             key[0]=true;
@@ -86,22 +91,23 @@ public class Window extends JPanel implements KeyListesner, ActionListener{
     public void actionPerformed(ActionEvent e) {
         repaint();
         update();
+        adjuster.updateView();
     }
 
     private void update() {
         if(key[3]){
-            s.angleIncrement(Math.toRadians(-5));
+            ship.angleIncrement(Math.toRadians(-5));
         }
         if(key[0]) {
-            s.forward();
+            ship.forward();
         }
         if(key[1]){
-            s.backward();
+            ship.backward();
         }
         if(key[2]){
-            s.angleIncrement(Math.toRadians(+5));
+            ship.angleIncrement(Math.toRadians(+5));
         }
-        Iterator<Bullets> iter = s.getList().iterator();
+        Iterator<Bullets> iter = ship.getList().iterator();
         while (iter.hasNext()) {
             Bullets p = iter.next();
             p.update();

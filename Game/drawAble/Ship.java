@@ -1,13 +1,13 @@
-package Game;
+package Game.drawAble;
+import Game.drawAble.Bullets;
+
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Created by Home on 2017-03-27.
  */
-public class Ship {
+public class Ship implements drawAble {
     public double x,y;
     public double x2,y2;
     public double angle=0;
@@ -22,6 +22,7 @@ public class Ship {
     public void angleIncrement(double i){
         angle+=-i;
     }
+
     public Polygon getShip(){
         int A = 8;
         int xPoly[] = {(int)(x-(A*2*Math.cos(-angle))),(int)(x+(-(A*Math.cos(-angle+2*Math.PI/3)))),(int)(x-(A*Math.cos(-angle-2*Math.PI/3)))};
@@ -58,5 +59,24 @@ public class Ship {
     }
     public void removeshoot(Bullets bull){
         b.remove(bull);
+    }
+
+    @Override
+    public int getX() {
+        return (int)x;
+    }
+
+    @Override
+    public int getY() {
+        return (int)y;
+    }
+
+    @Override
+    public int getT() {
+        return 30;
+    }
+
+    public void draw(Graphics g) {
+        g.drawPolygon(getShip());
     }
 }

@@ -1,9 +1,11 @@
-package Game;
+package Game.drawAble;
+
+import java.awt.*;
 
 /**
  * Created by Home on 2017-04-05.
  */
-public class Bullets{
+public class Bullets implements drawAble{
     int x,y;
     int vx,vy;
 
@@ -19,6 +21,17 @@ public class Bullets{
     public int getY(){
         return y;
     }
+
+    @Override
+    public int getT() {
+        return 10;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+
+    }
+
     public void update(){
         y+=vy;
         x+=vx;
